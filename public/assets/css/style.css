@@ -1,0 +1,35 @@
+body.ash{
+background-color: #fff;
+}
+.place-holder form {
+/*width: 60%;*/
+position: relative;
+/*background-color: #fff;*/
+margin-left: auto;
+margin-right: auto;
+padding: 5%;
+/*padding-right: 5%;*/
+
+}
+.place-holder {
+position: relative;
+background-color: #CCC;
+margin-left: auto;
+margin-right: auto;
+border-radius: 5%;
+border-top-left-radius: 0;
+border-top-right-radius: 0;
+margin-top: 3%;
+}
+.side-image {
+position: relative;
+background-color: red;
+}
+.wrapper{padding: 5%; background-image: url(../img/overlays/white.fw.png); /*background-color: red;*/ height: 400px;}
+.content{/*background-image: url(../img/overlays/white.fw.png);*/ position: relative; padding: 5%;}
+/*.table-margin {margin-top: 1em;}*/
+/*.each-form textarea{float: left; clear: left;}*/
+
+.bottom-border { border-bottom-style: solid; border-bottom-color: #eee; border-bottom-width: thin; }
+.top-border { border-top-style: solid; border-top-color: #eee; border-top-width: thin;  background: transparent;}
+/*.left-border { border-left-style: solid; border-left-color: #eee; border-left-width: thin; }*/
