@@ -1,5 +1,7 @@
-body.ash{
-background-color: #fff;
+body{
+/*background-color: #fff;*/
+background-color: #000;
+/*color: #000;*/
 }
 .place-holder form {
 /*width: 60%;*/
@@ -11,14 +13,24 @@ padding: 5%;
 /*padding-right: 5%;*/
 
 }
+.place-holder form input,textarea,select{
+	min-height: 40px;
+	border-radius: 0px;
+	/*border: none;*/
+	/*border-bottom: solid #000 thin;
+	box-shadow: none;*/
+}
+form select option {
+	min-height: 40px;
+}
 .place-holder {
-position: relative;
-background-color: #CCC;
+background-color: #fff;
+/*position: relative;
 margin-left: auto;
 margin-right: auto;
 border-radius: 5%;
 border-top-left-radius: 0;
-border-top-right-radius: 0;
+border-top-right-radius: 0;*/
 margin-top: 3%;
 }
 .side-image {

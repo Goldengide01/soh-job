@@ -15,12 +15,14 @@ class CreateMembersTable extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('email');
-            // $table->string('unique_id'); //not yet
-            $table->string('phone');
-            $table->string('sex');
+            $table->string('name')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('birthday')->nullable();
+            $table->string('original_pics_url')->nullable();
+            $table->string('square_pics_url')->nullable();
+            $table->string('wedding_anniversary')->nullable();
+            $table->string('gepi_partner');
             $table->timestamps();
         });
     }

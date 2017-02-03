@@ -11,6 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
+        $sql = file_get_contents(__DIR__ . '/members.sql');
+        $statements = array_filter(array_map('trim', explode(';', $sql)));
+
+        foreach ($statements as $stmt) {
+            DB::statement($stmt);
+        }
     }
 }

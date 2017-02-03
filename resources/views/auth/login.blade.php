@@ -4,7 +4,7 @@
 @stop
 @section('content')
 <div class="container">
-    <div class="row">
+    <div class="row" style="margin-top: 10%;">
         <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2" >
             <div class="panel panel-primary">
                 <div class="panel-heading text-center"><i class="icon-lock"> </i>GateWay</div>

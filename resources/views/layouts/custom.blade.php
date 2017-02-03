@@ -8,6 +8,7 @@
     <meta name="description" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="author" content="">
+	<link rel="icon" type="image/png" sizes="16x16" href="{{URL::asset('assets/img/soh1.fw.png')}}">
 	<link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/bootstrap/css/bootstrap.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/style.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/vegas/vegas.min.css') }}">
@@ -17,11 +18,6 @@
 	
 	@section('menu_style')
     <style type="text/css">
-        body{
-	    margin-top:20px;
-	    background:#eee;
-	    height:1500px;
-		}
 		.main-navigation .menu li a {
 		    display: block;
 		    font-size: 12px;
@@ -35,7 +31,9 @@
 		    -o-transition: color 0.3s;
 		    transition: color 0.3s;
 		}
-		.main-navigation .menu li a:hover {}
+		.main-navigation .menu li a:hover {
+			color: #000;
+		}
 		.floating-menu-btn {
 		    display: block;
 		    position: fixed;
@@ -82,7 +80,7 @@
 		}
 
 		.floating-header+* {
-		    padding-top: 190px
+		    padding-top: 0;
 		}
 
 		@media screen and (max-width: 768px) {
@@ -90,7 +88,7 @@
 		        padding: 25px 15px
 		    }
 		    .floating-header+* {
-		        padding-top: 175px
+		        padding-top: 0;
 		    }
 		}
 
@@ -264,7 +262,7 @@
 		    content: "";
 		    width: 56px;
 		    height: 56px;
-		    background-color: #e74c3c;
+		    background-color: #26C9FF;
 		    /*background-image: url(assets/img/overlays/white.fw.png);*/
 		    border-radius: 50%;
 		    -webkit-transform-origin: center 30%;
@@ -383,10 +381,29 @@
 	          <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i>Download</a>
 	          <ul class="sub-menu">
 	 
-	            <li class="current-menu-item"><a href="{{ url('/member/list.csv')}}">CSV FORMAT</a></li>
-	            <li><a href="{{ url('/member/list.txt') }}">TXT FORMAT</a></li>
-	            <li><a href="{{ url('/member/list.json') }}">JSON FORMAT</a></li>
-	            <li><a href="{{ url('/member/list.tsv') }}">TSV FORMAT</a></li>
+	            <li class="menu-item-has-children current-menu-item delay-0"><a href="#">Contacts</a>
+		          <ul class="sub-menu">
+		            <li class="menu-item-has-children current-menu-item delay-0"><a href="#">Email</a>
+			          <ul class="sub-menu">
+			 
+			            <li class="current-menu-item"><a href="{{ url('/member/emails.csv')}}">CSV FORMAT</a></li>
+			            <li><a href="{{ url('/member/emails.txt') }}">TXT FORMAT</a></li>
+			            <li><a href="{{ url('/member/emails.json') }}">JSON FORMAT</a></li>
+			            <li><a href="{{ url('/member/emails.tsv') }}">TSV FORMAT</a></li>
+			          </ul>
+			        </li>
+			        <li class="menu-item-has-children current-menu-item delay-0"><a href="#">Phone</a>
+			          <ul class="sub-menu">
+			 
+			            <li class="current-menu-item"><a href="{{ url('/member/phones.csv')}}">CSV FORMAT</a></li>
+			            <li><a href="{{ url('/member/phones.txt') }}">TXT FORMAT</a></li>
+			            <li><a href="{{ url('/member/phones.json') }}">JSON FORMAT</a></li>
+			            <li><a href="{{ url('/member/phones.tsv') }}">TSV FORMAT</a></li>
+			          </ul>
+			        </li>
+		          </ul>
+	            </li>
+	            <li><a href="{{ url('/member/contacts.csv') }}">Infos in EXCEL</a></li>
 	          </ul>
 	        </li>
 	        <li class="delay-3">
@@ -487,10 +504,7 @@
 		transition: 'flash',
 		transitionDuration: 2000,
 		slides: [
-			{src: "{{URL::asset('assets/img/gideon7.png') }}"},
-			{src: "{{URL::asset('assets/img/gideon4.png') }}"},
-			{src: "{{URL::asset('assets/img/gideon5.png') }}"},
-			{src: "{{URL::asset('assets/img/Gideon6.png') }}"}
+			{src: "{{URL::asset('assets/img/wall-papers/1.jpg') }}"}
 		]
 	});
 </script>
