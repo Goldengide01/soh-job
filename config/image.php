@@ -16,5 +16,6 @@ return array(
     */
 
     'driver' => 'gd'
+    // 'driver' => 'imagick'
 
 );

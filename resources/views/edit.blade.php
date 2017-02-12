@@ -21,12 +21,16 @@
 					<input type="text" class="form-control" name="email" value="{{ $member->email}} ">
 				</div>
 				<div class="form-group">
-					<label for="lastname">Birthday</label><br>
-					<input type="text" class="form-control" name="birthday" value="{{ $member->birthday}} ">
+					<label for="birthday">Birthday</label><br>
+					<input type="text" class="form-control" name="birthday" value="{{ $member->birthday}} "  data-mask="99/99/9999 99:99 am">
 				</div>
 				<div class="form-group">
-					<label for="lastname">Wedding Anniversary</label><br>
-					<input type="text" class="form-control" name="wedding_anniversary" value="{{ $member->wedding_anniversary}} ">
+					<label for="wedding_anniversary">Wedding Anniversary</label><br>
+					<input type="text" class="form-control" name="wedding_anniversary" value="{{$member->wedding_anniversary}} " data-mask="99/99/9999 99:99 am"  >
+				</div>
+				<div class="form-group">
+					<label for="unit">Unit</label><br>
+					<input type="text" class="form-control" name="unit" value="{{ $member->unit}} ">
 				</div>
 				<div class="form-group">
 					<label for="gepi">Gepi Partner</label><br>
@@ -34,7 +38,7 @@
 					@if($member->gepi_partner == "YES")
 						<option name ="YES" selected>YES</option>
 						<option name ="NO" >NO</option>
-					@else
+					@else  data-mask="99/99/9999 99:99 am"
 						<option name ="YES">YES</option>
 						<option name ="NO" selected>NO</option>
 					@endif

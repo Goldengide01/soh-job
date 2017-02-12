@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/member/merge/{update}', 'MemberController@mergeDuplicated');
 	Route::get('/member/merge', 'MemberController@mergeAllDuplicated');
 	
+	/*
 	Route::get('/member/normalize/phone', 'MemberController@addZerotoPhoneNumbersThatDoNotHave');
 	Route::get('/member/normalize/birthday', 'MemberController@normalizeBirthdaysToSameFormat');
 	Route::get('/member/normalize/wedding', 'MemberController@normalizeWeddingAnniversaryToSameFormat');
@@ -41,13 +42,17 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/member/normalize/reverse/test', 'MemberController@reversedate');
 	Route::get('/member/normalize/remove/birthday/dot', 'MemberController@removeDotFromBirthdays');
 	Route::get('/member/normalize/remove/wedding/dot', 'MemberController@removeDotFromWeddingAnniversary');
+
+	Route::get('/member/normalize/add/zero', 'MemberController@addZerotoDatesThatHaveSingleNumbers');
 	
 	Route::get('/member/truncate/test/{f}/{g}/{h}', 'MemberController@truncate');
 	Route::get('/member/truncate/birthday-month', 'MemberController@truncateBirthDateFormat');
 	Route::get('/member/truncate/wedding-month', 'MemberController@truncateWeddingDateFormat');
 
-	Route::get('/member/folder/test', 'MemberController@createFolderIfNotExist');
+	*/
 
+	Route::get('/member/folder/test', 'MemberController@createFolderIfNotExist');
+	
 	Route::get('/member/emails.csv', 'MemberController@emailiNcsv');
 	Route::get('/member/emails.tsv', 'MemberController@emailiNtsv');
 	Route::get('/member/emails.txt', 'MemberController@emailiNtxt');
@@ -55,7 +60,6 @@ Route::group(['middleware' => 'auth'], function() {
 
 	Route::get('/member/contacts.csv', 'MemberController@lisTiNcsv');
 	Route::get('/member/contacts.tsv', 'MemberController@lisTiNtsv');
-	Route::get('/member/contacts.txt', 'MemberController@lisTiNtxt');
 	Route::get('/member/contacts.json', 'MemberController@lisTiNjson');
 	
 	Route::get('/member/view/{id}', 'MemberController@view');
@@ -64,9 +68,11 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/member/edit', 'MemberController@editPost');
 	Route::get('/member/add', 'MemberController@addget');
 	Route::post('/member/add', 'MemberController@addPost');
+	Route::get('/member/contacts.txt', 'MemberController@lisTiNtxt');
 	Route::get('/home', 'HomeController@index');
 });
 
+	Route::get('/member/permission', 'MemberController@check');
 
  // The only thing remaining is the authentication
 // FInd a way for every file extension to download automatically without going to the page

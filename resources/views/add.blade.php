@@ -25,11 +25,15 @@
 				</div> -->
 				<div class="form-group">
 					<label for="lastname">Birthday</label><br>
-					<input type="text" class="form-control" name="birthday" placeholder="Select your Birthday">
+					<input type="text" class="form-control" name="birthday" placeholder="Select your Birthday" data-mask="99/99/9999 99:99 am">
 				</div>
 				<div class="form-group">
 					<label for="lastname">Wedding Anniversary</label><br>
-					<input type="text" class="form-control" name="wedding_anniversary" placeholder="Select your Wedding Anniversary if not leave Blank">
+					<input type="text" class="form-control" name="wedding_anniversary" placeholder="Select your Wedding Anniversary if not leave Blank" data-mask="99/99/9999 99:99 am">
+				</div>
+				<div class="form-group">
+					<label for="lastname">Unit</label><br>
+					<input type="text" class="form-control" name="unit" placeholder="unit">
 				</div>
 				<div class="form-group">
 					<label for="gepi">Gepi Partner</label><br>

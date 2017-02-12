@@ -13,6 +13,8 @@
 	<link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/style.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/vegas/vegas.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset("assets/font-awesome/css/font-awesome.min.css") }}">
+	<link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/datepicker/bootstrap-datepicker.min.css')}}">
+
 	@section('special_plugins_css')
 	@show
 	
@@ -404,6 +406,7 @@
 		          </ul>
 	            </li>
 	            <li><a href="{{ url('/member/contacts.csv') }}">Infos in EXCEL</a></li>
+	            <!-- <li><a href="{{ url('/member/contacts.json') }}">All Data</a></li> -->
 	          </ul>
 	        </li>
 	        <li class="delay-3">
@@ -426,6 +429,7 @@
 <script src = "{{URL::asset('assets/scripts/jquery.min.js')}}"></script>
 <script src = "{{URL::asset('assets/bootstrap/js/bootstrap.js')}}"></script>
 <script src = "{{URL::asset('assets/vegas/vegas.min.js')}}"></script>
+<script src = "{{URL::asset('assets/datepicker/bootstrap-datepicker.min.js')}}"></script>
 @section('special_plugins_script')
 @show
 <script type="text/javascript">
@@ -507,6 +511,8 @@
 			{src: "{{URL::asset('assets/img/wall-papers/1.jpg') }}"}
 		]
 	});
+
+	$('.mydatepicker').datepicker();
 </script>
 
 </body>

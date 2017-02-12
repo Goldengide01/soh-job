@@ -19,6 +19,9 @@ class CreateMembersTable extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('birthday')->nullable();
+            $table->string('unit')->nullable();
+            // $table->string('role_in_the_unit')->nullable();
+            // $table->string('role_in_the_church')->nullable();
             $table->string('original_pics_url')->nullable();
             $table->string('square_pics_url')->nullable();
             $table->string('wedding_anniversary')->nullable();

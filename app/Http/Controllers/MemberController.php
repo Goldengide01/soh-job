@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\File;
 use DB;
 
 class MemberController extends Controller
@@ -18,6 +19,8 @@ class MemberController extends Controller
     	$member->email = $request['email'];
         $member->phone = $request['phone'];
         $member->birthday = $request['birthday'];
+        $member->unit = $request['unit'];
+        // $member->role_in_un = $request['unit'];
         $member->gepi_partner = $request['gepi_partner'];
     	$member->wedding_anniversary = $request['wedding_anniversary'];
     	// $member->sex = $request['sex'];
@@ -89,6 +92,7 @@ class MemberController extends Controller
         $member->email = $request['email'];
         $member->phone = $request['phone'];
         $member->birthday = $request['birthday'];
+        $member->unit = $request['unit'];
         $member->gepi_partner = $request['gepi_partner'];
         $member->wedding_anniversary = $request['wedding_anniversary'];        // $reportSuffix = "Contact the IT Department";
         $isSaved = $member->save();
@@ -125,6 +129,8 @@ class MemberController extends Controller
 
 
     public function index(){
+        // $members = Member::whereRaw('wedding_anniversary NOT LIKE "NO"')->whereRaw('wedding_anniversary NOT LIKE ""')->whereRaw('wedding_anniversary NOT LIKE " "')->get();
+        // $members = Member::whereRaw('birthday NOT LIKE "NO"')->whereRaw('birthday NOT LIKE ""')->whereRaw('birthday NOT LIKE " "')->get();
     	$members = Member::all();
     	// return $members;
     	return view('index')->with('members', $members);
@@ -289,6 +295,20 @@ class MemberController extends Controller
         return Redirect::to('/member');
     }
 
+    public function addZerotoDatesThatHaveSingleNumbers() {
+        // $startWithZero
+        $membersPhones = Member::whereRaw('birthday NOT LIKE "NO"')->whereRaw('birthday NOT LIKE ""')->whereRaw('birthday NOT LIKE " "')->get();
+        foreach ($membersPhones as $membersPhone) {
+            $dateArr = explode("-", $membersPhone->birthday);
+            if (strlen(trim($dateArr[1])) < 2) {
+                DB::table('members')->where('id', $membersPhone->id)->update(['birthday' => $dateArr[0]."-0".$dateArr[1]]);
+            }
+            
+        }
+       
+        return Redirect::to('/member');
+    }
+
     public function normalizeBirthdaysToSameFormat() {
         $unwantedFormatDelimiterArray= array("th ", "st ", "nd ", "/", "rd ", "th");
         $desiredFormatDelimiter= "-";
@@ -387,16 +407,16 @@ class MemberController extends Controller
     }
 
     public function truncate($string, $delimiter, $length) {
-        // $string = "Jan-13";
-        // $delimiter = "-";
-        // $length = 3;
-        $firstWord = explode($delimiter, $string);
+        /*$string = " April-24";
+        $delimiter = "-";
+        $length = 3;*/
+        $firstWord = explode($delimiter, ltrim($string));
         $truncate = str_split($firstWord[0]);
         $truncated = "";
         for($i = 0; $i<$length; $i++) {
             $truncated = $truncated . $truncate[$i];
         }
-        return $truncated . "-" . $firstWord[1];
+        return trim($truncated . "-" . $firstWord[1]);
     }
 
     public function reversedate($delimiter, $string) {
@@ -444,58 +464,107 @@ class MemberController extends Controller
 
         $id = $request['id'];
 
-        $destinationPathOfOriginalPicture = "uploads/original";
+        $destinationPathOfOriginalPicture = "uploads\original";
 
-        $destinationPathOfSquaredPicture = "uploads/square";
+        $destinationPathOfSquaredPicture = "uploads\square";
+
+        // $destinationPathOfOriginalPicture = public_path("uploads\original");
+
+        // $destinationPathOfSquaredPicture = public_path("uploads\square");
 
         $member = Member::find($id);
 
         $file = $request->file('photo');
 
-        $image = \Image::make($file);
+        // $image = \Image::make($file);
+        $filename = Member::where('id', $id)->first()->email . ".png";
+        // $filename = Member::where('id', $id)->first()->email . "." . $file->getClientOriginalExtension();
+        $image = \Image::make($file->getRealPath());
 
-        $filename = $member->first()->email.".".$file->getClientOriginalExtension();
-
-        if ($request->hasFile('photo')) {
-
+        if($request->hasFile('photo')) {
             if ($file->isValid()) {
+                
+                if($file->move($destinationPathOfOriginalPicture, $filename)) {
 
-                $image->save($destinationPathOfOriginalPicture, $filename);
-
-                $image->resize(200, 200);
-
-                $image->save($destinationPathOfSquaredPicture, $filename);
-
-                $member->original_pics_url = $destinationPathOfOriginalPicture."/".$filename;
+                    $this->cropImage($destinationPathOfOriginalPicture."/".$filename, $destinationPathOfSquaredPicture."/".$filename, $file->getClientOriginalExtension());
                     
-                $member->square_pics_url = $destinationPathOfSquaredPicture."/".$filename;
+                    $member->original_pics_url = $destinationPathOfOriginalPicture."/".$filename;
 
-                $isSaved = $member->save();
+                    $member->square_pics_url = $destinationPathOfSquaredPicture."/".$filename;
 
-                if ($isSaved) {
-                    return Redirect::to('/member/view/'.$id)->withInput($request->session()->flash('alert-success', "Picture Updated"));
+                    if($member->save()) {
+                        return Redirect::to('/member/view/'.$id)->with('alert-success', "Your Profile Pics has been updated");
+                    }
+                    else {
+                        return Redirect::to('/member/view/'.$id)->with('alert-failure', "Error Updating Picture");
+                    }
+                    
                 }
-                else {
-                    return Redirect::to('/member/view/'.$id)->withInput($request->session()->flash('alert-failure', "Error updating picture"));
-                }
+
             }
             else {
-                return Redirect::to('/member/view/'.$id)->withInput($request->session()->flash('alert-failure', "Invalid Picture"));
+                return Redirect::to('/member/view/'.$id)->with('alert-failure', "What you uploaded is not a valid picture");
+                // echo "Wrong";
             }
         }
         else {
-            return Redirect::to('/member/view/'.$id)->withInput($request->session()->flash('alert-failure', "Picture size must be less than 2MB"));
+                return Redirect::to('/member/view/'.$id)->with('alert-failure', "Picture Size must not be greater than 2MB");
         }
-        // return $members;
+    }
+
+    public function cropImage($filepath, $destination, $extension) {
+        // File and new size
+        if (is_file($filepath)) {
+            if ($extension == "png") {
+                $im = imagecreatefrompng($filepath);
+            }
+            else if ($extension == "jpg") {
+                $im = imagecreatefromjpeg($filepath);
+            }
+            elseif ($extension == "bmp") {
+                $im = imagecreatefromwbmp($filepath);
+            }
+            elseif ($extension == "gif") {
+                $im = imagecreatefromgif($filepath);
+            }
+            /*elseif ($extension == "webp") {
+                $im = imagecreatefromwebp($filepath);
+            }
+            elseif ($extension == "webp") {
+                $im = imagecreatefromwebp($filepath);
+            }*/
+            $size = min(imagesx($im), imagesy($im));
+            $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => $size, 'height' => $size]);
+            if ($im2 !== FALSE) {
+                imagepng($im2, $destination);
+            }
+
+        }
+        elseif(!file_exists($filepath)) {
+            echo "<h1>Invalid File path</h1>";
+        }
+         else {
+            echo "<h1>This is not a file</h1>";
+        }
+
     }
     
-    public function createFolderIfNotExist($folder_path) {
+    public function createFolderIfNotExist() {
+        $folder_path = "uploads/square";
+        // $folder_path = "uploads/original";
         $segment = explode("/", $folder_path);
         foreach ($segment as $path) {
             if (!is_dir($path)) {
-                mkdir($path);
+                mkdir($path, $mode=0777, $recursive = false);
+                chdir($path);
+            }
+            elseif(is_dir($path)) {
                 chdir($path);
             }
         }
+    }
+
+    public function check() {
+        dd(is_writable(public_path("uploads/original")));
     }
 }
