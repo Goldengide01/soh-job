@@ -5,8 +5,9 @@
 		<div class="place-holder col-xs-12">
 			<!-- text, name, placeholder -->
 			<!-- <div class="package"></div> -->
-			<form action="{{url('/member/edit')}}" method="post">
+			<form action="{{url('/profile/update')}}" method="post">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<input type="hidden" name="token" value="{{ $member->token }}">
 				<input type="hidden" name="id" value="{{ $member->id }}">
 				<div class="form-group">
 					<label for="name">Name</label><br>

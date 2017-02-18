@@ -19,5 +19,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'amowogbajegideon@gmail.com',
 
         ]);
+
+        
     }
 }

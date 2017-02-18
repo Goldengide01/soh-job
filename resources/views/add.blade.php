@@ -13,7 +13,7 @@
 				</div>
 				<div class="form-group">
 					<label for="email">Phone</label><br>
-					<input type="text" class="form-control" name="phone" placeholder="Please Enter full phone with country code preceeding it">
+					<input type="text" class="form-control" name="phone" placeholder="Please Enter phone number">
 				</div>
 				<div class="form-group">
 					<label for="email">Email</label><br>
@@ -25,11 +25,11 @@
 				</div> -->
 				<div class="form-group">
 					<label for="lastname">Birthday</label><br>
-					<input type="text" class="form-control" name="birthday" placeholder="Select your Birthday" data-mask="99/99/9999 99:99 am">
+					<input type="text" class="form-control" name="birthday" placeholder="Birthday" data-mask="aaa-99">
 				</div>
 				<div class="form-group">
 					<label for="lastname">Wedding Anniversary</label><br>
-					<input type="text" class="form-control" name="wedding_anniversary" placeholder="Select your Wedding Anniversary if not leave Blank" data-mask="99/99/9999 99:99 am">
+					<input type="text" class="form-control" name="wedding_anniversary" placeholder="Wedding Anniversary Day" data-mask="aaa-99">
 				</div>
 				<div class="form-group">
 					<label for="lastname">Unit</label><br>
@@ -63,6 +63,7 @@
 @endsection
 @section('special_plugins_script')
 <script src = "{{URL::asset('assets/datepicker/bootstrap-datepicker.min.js')}}"></script>
+<script src = "{{URL::asset('assets/scripts/mask.js')}}"></script>
 <script type="text/javascript">
 	$('.mydatepicker').datepicker({
 		todayBtn: 1,

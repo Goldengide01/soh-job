@@ -14,7 +14,6 @@
 					<dt style="white-space: normal; text-align: left;">Phone:</dt> <dd>{{$member->phone}}</dd><br>
 					<dt style="white-space: normal; text-align: left;">Email:</dt> <dd>{{$member->email}}</dd><br>
 					<dt style="white-space: normal; text-align: left;">Birthday:</dt> <dd>{{$member->birthday}}</dd><br>
-					<dt style="white-space: normal; text-align: left;">Token:</dt> <dd>{{$member->token}}</dd><br>
 					@if(trim($member->unit) != "")
 					<dt style="white-space: normal; text-align: left;">Unit:</dt> <dd>{{$member->unit}}</dd><br>
 					@endif
@@ -23,7 +22,13 @@
 					<dt style="white-space: normal; text-align: left;">Wedding Anniversary:</dt> <dd>{{$member->wedding_anniversary}}</dd><br><br>
 					@endif
 					<dt style="white-space: normal; text-align: left;">GEPI Partner:</dt> <dd>{{$member->gepi_partner}}</dd><br><br>
-					<dt><a class="btn btn-large form-control btn-default" style="border-radius: 0;" type="button" href="{{url('/member/edit/'.$member->id)}}">Edit</a><br><a class="btn btn-large form-control btn-primary" style="border-radius: 0;" type="button" href="{{url('/member')}}">Back to List</a></dt>
+					<dt>
+						<form action="{{url('/profile/update/info')}}" method="post">
+							<input type="hidden" name="token" value="{{$member->token}}">
+							<input type="hidden" name="_token" value="{{ csrf_token() }}">
+							<button class="btn btn-large form-control btn-default" style="border-radius: 0;" type="submit">Edit again</button>
+						</form>
+					</dt>
 				</dl>
 	 		</div>
 	 		<div class="side-bar col-lg-3 col-md-4 col-sm-6 hidden-xs" style="margin: auto;">

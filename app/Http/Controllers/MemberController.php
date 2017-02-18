@@ -18,11 +18,12 @@ class MemberController extends Controller
     	$member->name = $request['name'];
     	$member->email = $request['email'];
         $member->phone = $request['phone'];
-        $member->birthday = $request['birthday'];
+        // $member->token = $request['token'];
+        $member->birthday = ucfirst($request['birthday']);
         $member->unit = $request['unit'];
         // $member->role_in_un = $request['unit'];
         $member->gepi_partner = $request['gepi_partner'];
-    	$member->wedding_anniversary = $request['wedding_anniversary'];
+    	$member->wedding_anniversary = ucfirst($request['wedding_anniversary']);
     	// $member->sex = $request['sex'];
         $reportSUffix = "Contact the IT Department";
         $uniqueEntity;
@@ -45,7 +46,7 @@ class MemberController extends Controller
             else{
             	$isSaved = $member->save();
             	if ($isSaved) {
-            		return Redirect::to('/member')->withInput($request->session()->flash('alert-success', "Details added"));
+            		return Redirect::to('/member')->withInput($request->session()->flash('alert-success', $request['name']." details added to the database"));
             		// return Redirect::to('/memeber/add')->withInput();
             	}
             	else{
@@ -57,7 +58,7 @@ class MemberController extends Controller
         else {
             $isSaved = $member->save();
             if ($isSaved) {
-                return Redirect::to('/member')->withInput($request->session()->flash('alert-success', "Details added"));
+                return Redirect::to('/member')->withInput($request->session()->flash('alert-success', $request['name']." details added to the database"));
                 // return Redirect::to('/memeber/add')->withInput();
             }
             else{
@@ -70,12 +71,61 @@ class MemberController extends Controller
     	return view('add');
     }
 
+    public function enterToken(){
+        return view('token');
+    }
+
+    public function editPersonalGet(Request $request){
+        $token = $request['token'];
+        if (!$token) {
+            return Redirect::to('/profile/update/info');
+        }
+        else {
+            $checkMemberExist = Member::where('token',$token)->count();
+            $member = Member::where('token',$token)->first();
+            if ($checkMemberExist == 0) {
+                // return "<h2>Please go throught the front door and stop finding a backdoor cause you'll never see one!!!</h2>";
+                return Redirect::to('/profile/update/info')->withInput('alert-failure', "Hi, that token don't exist in our list");
+                
+            }
+            else {
+                return view('editPerson')->with('member', $member);
+            }
+        }
+    }
+
+    public function editPersonalPost(Request $request){
+        $token = $request['token'];
+        if (!$token) {
+            return Redirect::to('/profile/update/info');
+        }
+        else {
+            // $memberId = Member::where('token',$token)->first()->id;
+            $memberId = Member::where('token',$token)->first()->id;
+            // return $membersPhone
+            $member = Member::find($memberId);
+            // a kind of cobdition where id is excempted
+            $memberCheck = Member::where('token',$token)->first();
+            $member->name = $request['name'];
+            $member->email = $request['email'];
+            $member->phone = $request['phone'];
+            $member->birthday = ucfirst($request['birthday']);
+            $member->unit = $request['unit'];
+            $member->gepi_partner = $request['gepi_partner'];
+            $member->wedding_anniversary = ucfirst($request['wedding_anniversary']);        // $reportSuffix = "Contact the IT Department";
+            $isSaved = $member->save();
+            if ($isSaved) {
+                return Redirect::to('/profile/view/info/'.$member->token)->withInput($request->session()->flash('alert-success', "Biodata information of $memberCheck->name has been updated.."));
+            }
+        }
+    }
+
     public function editGet($id){
         $checkMemberExist = Member::where('id',$id)->count();
         $member = Member::where('id',$id)->first();
         if ($checkMemberExist == 0) {
             // return "<h2>Please go throught the front door and stop finding a backdoor cause you'll never see one!!!</h2>";
-            return Redirect::to('/member');
+            return Redirect::to('/member')->withInput('alert-failure', "Hi, that id don't exist in our list");
             
         }
         else {
@@ -91,10 +141,10 @@ class MemberController extends Controller
     	$member->name = $request['name'];
         $member->email = $request['email'];
         $member->phone = $request['phone'];
-        $member->birthday = $request['birthday'];
+        $member->birthday = ucfirst($request['birthday']);
         $member->unit = $request['unit'];
         $member->gepi_partner = $request['gepi_partner'];
-        $member->wedding_anniversary = $request['wedding_anniversary'];        // $reportSuffix = "Contact the IT Department";
+        $member->wedding_anniversary = ucfirst($request['wedding_anniversary']);        // $reportSuffix = "Contact the IT Department";
         $isSaved = $member->save();
         if ($isSaved) {
             return Redirect::to('/member')->withInput($request->session()->flash('alert-success', "Biodata information of $memberCheck->name has been updated.."));
@@ -114,9 +164,22 @@ class MemberController extends Controller
         }
     }
 
+    public function viewPerson($token){
+        $checkMemberExist = Member::where('token',$token)->count();
+    	$member = Member::where('token',$token)->first();
+        if ($checkMemberExist == 0) {
+            // return "<h2>Please go throught the front door and stop finding a backdoor cause you'll never see one!!!</h2>";
+            return Redirect::to('/member');
+            
+        }
+        else {
+            return view('viewPerson')->with('member', $member);
+        }
+    }
+
     public function view($id){
         $checkMemberExist = Member::where('id',$id)->count();
-    	$member = Member::where('id',$id)->first();
+        $member = Member::where('id',$id)->first();
         if ($checkMemberExist == 0) {
             // return "<h2>Please go throught the front door and stop finding a backdoor cause you'll never see one!!!</h2>";
             return Redirect::to('/member');
@@ -131,30 +194,49 @@ class MemberController extends Controller
     public function index(){
         // $members = Member::whereRaw('wedding_anniversary NOT LIKE "NO"')->whereRaw('wedding_anniversary NOT LIKE ""')->whereRaw('wedding_anniversary NOT LIKE " "')->get();
         // $members = Member::whereRaw('birthday NOT LIKE "NO"')->whereRaw('birthday NOT LIKE ""')->whereRaw('birthday NOT LIKE " "')->get();
+        $this->backup();
     	$members = Member::all();
     	// return $members;
     	return view('index')->with('members', $members);
     }
+
     public function lisTiNcsv(){
     	$members = Member::orderBy('name', 'asc')->get();
     	$txtContent = array();
-    	$txtContent[0] = "name, phone, email, birthday, wedding_anniversary,gepi_partner"; 
+    	$txtContent[0] = "name,phone,email,birthday,wedding_anniversary,gepi_partner,unit"; 
     	foreach ($members as $key => $member) {
-    		$txtContent[] = $member->name. ",". $member->phone. ",". $member->email. ",". $member->birthday. ",". $member->wedding_anniversary. ",". $member->gepi_partner; 
+    		$txtContent[] = $member->name. ",". $member->phone. ",". $member->email. ",". $member->birthday. ",". $member->wedding_anniversary. ",". $member->gepi_partner. ",". $member->unit; 
     	}
     	$list = implode("\n", $txtContent);
+        
     	return response($list)
                     ->header('Content-Type', 'text/csv')
                     ->header('Content-type', 'application/force-download')
                     ->header('X-Header-One', 'Header Value');
     }
 
+    public function backup(){
+        $members = Member::orderBy('name', 'asc')->get();
+
+        // $list = $members;
+        $list = json_encode($members,JSON_PRETTY_PRINT);
+
+        $csvFile = public_path('../database/seeds/dumps/contacts.json');
+
+        if($handle = fopen($csvFile, 'w')) {
+
+            fwrite($handle, $list);
+
+        }
+
+    }
+
     public function lisTiNtsv(){
         $members = Member::all();
         $txtContent = array();
-        $txtContent[0] = "name\t phone\t email\t birthday\t wedding_anniversary\t gepi_partner"; 
+        $txtContent[0] = "name\t phone\t email\t birthday\t wedding_anniversary\t gepi_partner\t unit"; 
         foreach ($members as $key => $member) {
-            $tsvContent[] = $member->name. "\t". $member->phone. "\t". $member->email. "\t". $member->birthday. "\t". $member->wedding_anniversary. "\t". $member->gepi_partner; 
+            $tsvContent[] = $member->name. "\t". $member->phone. "\t". $member->email. "\t". $member->birthday. "\t". $member->wedding_anniversary. "\t". $member->gepi_partner. "\t". $member->unit; 
         }
         $list = implode("\n", $tsvContent);
         return response($list)
@@ -178,7 +260,7 @@ class MemberController extends Controller
         $txtContent = array();
         $txtContent[0] = "Name Phone Email Birthday WeddingAnniversary GEPIPartner"; 
         foreach ($members as $key => $member) {
-            $tsvContent[] = $member->name. " ". $member->phone. " ". $member->email. " ". $member->birthday. " ". $member->wedding_anniversary. " ". $member->gepi_partner; 
+            $tsvContent[] = $member->name. " ". $member->phone. " ". $member->email. " ". $member->birthday. " ". $member->wedding_anniversary. " ". $member->gepi_partner. " ". $member->unit; 
         }
         $list = implode("\n", $tsvContent);
         return response($list)
@@ -235,7 +317,7 @@ class MemberController extends Controller
                     ->header('X-Header-One', 'Header Value');
     }
 
-     public function emailiNcsv(){
+    public function emailiNcsv(){
         $members = Member::all();
         $txtContent = array();
         foreach ($members as $key => $member) {
@@ -565,6 +647,25 @@ class MemberController extends Controller
     }
 
     public function check() {
-        dd(is_writable(public_path("uploads/original")));
+        $json_path = public_path('contacts.json');
+        $json_data = File::get($json_path);
+        $json_array = json_decode($json_data, TRUE);
+
+        return $json_array;
+        
     }
+    public function updateAllToken() {
+        $members = Member::all();
+        foreach ($members as $member) {
+            $find = Member::where('id', $member->id)->first();
+            $token = md5($find->email.$find->birthday);
+            $member = DB::table('members')
+                        ->where('id', $member->id)
+                        ->update(array('token' => $token));
+            
+        }
+        return $token;
+    }
+
+
 }

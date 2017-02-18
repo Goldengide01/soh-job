@@ -1,0 +1,8 @@
+Step1. Install the latest Wampserver and make sure it is running.
+Step2. Download git and make sure it is also running
+Step3. go to C:/wamp64/www and create folder "soh" 
+Step4: open your git bash and type cd C:/wamp64/www/soh and press enter
+Step5: type git init and press enter
+Step6: type git remote add origin ""
+Step7: type git pull origin master and press enter
+Step8: go to your browser and type localhost/soh/public then you can start browsing

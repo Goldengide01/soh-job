@@ -47,7 +47,11 @@
 					<td>
 						<a class="text-primary" href="{{url('/member/view/'.$member->id)}}" title="view"><i class="icon-eye-open"> </i></a> 
 						<a class="text-warning" href="{{url('/member/edit/'.$member->id)}}" title="edit"><i class="icon-edit"> </i></a> 
+
+						@if(trim($member->name) == "")
 						<a class="text-danger confirm-delete" href="{{url('/member/delete/'.$member->id)}}" title="delete"><i class="icon-remove"> </i></a>
+						@endif
+
 						@if($member->count($member->email) > 1)
 						<br><a class="text-danger" href="{{url('/member/merge/'.$member->email)}}" title="merge duplicates"><i class="icon-resize-small"> </i>merge{{$member->count($member->email)}}</a>
 						@endif

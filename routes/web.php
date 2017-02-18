@@ -32,7 +32,6 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/member/pics/update', 'MemberController@updatePics');
 	Route::get('/member/merge/{update}', 'MemberController@mergeDuplicated');
 	Route::get('/member/merge', 'MemberController@mergeAllDuplicated');
-	
 	/*
 	Route::get('/member/normalize/phone', 'MemberController@addZerotoPhoneNumbersThatDoNotHave');
 	Route::get('/member/normalize/birthday', 'MemberController@normalizeBirthdaysToSameFormat');
@@ -70,9 +69,15 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::post('/member/add', 'MemberController@addPost');
 	Route::get('/member/contacts.txt', 'MemberController@lisTiNtxt');
 	Route::get('/home', 'HomeController@index');
+	Route::get('/member/backup', 'MemberController@backup');
 });
 
-	Route::get('/member/permission', 'MemberController@check');
+Route::get('/member/permission', 'MemberController@check');
+Route::get('/member/update/token', 'MemberController@updateAllToken');
+Route::get('/profile/update/info', 'MemberController@enterToken');
+Route::post('/profile/update/info', 'MemberController@editPersonalGet');
+Route::get('/profile/view/info/{token}', 'MemberController@viewPerson');
+Route::post('/profile/update', 'MemberController@editPersonalPost');
 
  // The only thing remaining is the authentication
 // FInd a way for every file extension to download automatically without going to the page
