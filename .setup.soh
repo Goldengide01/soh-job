@@ -3,6 +3,8 @@ Step2. Download git and make sure it is also running
 Step3. go to C:/wamp64/www and create folder "soh" 
 Step4: open your git bash and type cd C:/wamp64/www/soh and press enter
 Step5: type git init and press enter
-Step6: type git remote add origin ""
+Step6: type git remote add origin "https://github.com/Goldengide01/soh-job.git" and press enter
 Step7: type git pull origin master and press enter
-Step8: go to your browser and type localhost/soh/public then you can start browsing
+Step8: if the git pull was successful you will see the files in your folder then type composer install and press enter
+Step8: If composer install is successful you can now go to your browser and type localhost/soh/public then you can start
+       browsing with the username given to you

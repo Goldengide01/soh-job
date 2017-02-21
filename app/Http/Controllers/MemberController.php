@@ -216,18 +216,24 @@ class MemberController extends Controller
     }
 
     public function backup(){
-        $members = Member::orderBy('name', 'asc')->get();
-
-        // $list = $members;
-        $list = json_encode($members,JSON_PRETTY_PRINT);
-
         $csvFile = public_path('../database/seeds/dumps/contacts.json');
+        $previousData = File::get($csvFile);
+        $previousDataCount = count(json_decode($previousData, TRUE));
+        $currentDataCount = Member::orderBy('name', 'asc')->count();
+        if ($previousDataCount < $currentDataCount) {
+            $members = Member::orderBy('name', 'asc')->get();
+            
+            // $list = $members;
+            $list = json_encode($members,JSON_PRETTY_PRINT);
 
-        if($handle = fopen($csvFile, 'w')) {
 
-            fwrite($handle, $list);
+            if($handle = fopen($csvFile, 'w')) {
 
+                fwrite($handle, $list);
+
+            }
         }
+        // return $currentDataCount;
 
     }
 
